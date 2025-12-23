@@ -1,6 +1,4 @@
-import express from "express";
-
-const app = express();
+import { app } from "./app.js";
 const port = 3000;
 
 // app.get('/', (req, res) => {
@@ -20,14 +18,14 @@ res.send(`<!doctype html>
             <main class="max-w-2xl mx-auto p-8">
             <div class="rounded-xl bg-white shadow-sm ring-1 ring-gray-100 p-8">
                 <h1 class="text-3xl font-bold tracking-tight text-blue-600">
-                Hello Client! I am your Server by Chutidet!
+                Hello Client! I am your Server!
                 </h1>
                 <p class="mt-3 text-gray-600">
                 This page is styled with <span class="font-semibold">Tailwind CSS</span> via CDN.
                 </p>
                 <div class="mt-6 flex flex-wrap items-center gap-3">
-                    <a href="/members" class="inline-flex items-center rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white shadow hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
-                    GET /members
+                    <a href="/users" class="inline-flex items-center rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white shadow hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
+                    GET /users
                     </a>
                     <span class="text-xs text-gray-500">Try POST/PUT/DELETE with your API client.</span>
                 </div>
@@ -39,6 +37,28 @@ res.send(`<!doctype html>
         </body>
     </html>`);
 });
+
+let users = [{id:"1", name:"Alice", email:"alice@example.com"}]
+
+app.get("/users", (req, res) => {
+    res.status(200).json(users);
+    console.log(res);
+});
+
+app.post("/users", (req, res) => {
+    const {name, email} = req.body
+
+    const newUser = {
+        id: String(users.length + 1),
+        name: name,
+        email: email
+    };
+
+    users.push(newUser)    
+
+res.status(201).json(newUser);
+});
+
 
 app.listen(port, () => {
     console.log(`Example app listening on port ${port}`);
