@@ -1,12 +1,21 @@
+### GET
 GET http://localhost:3000/users
 
 
 
 
+### POST
 POST http://localhost:3000/users
 Content-Type: application/json
 
 {
-    "name":"Bob",
-    "email":"bob@example.com"
+    "name":"Chutidet",
+    "email":"Chutidet@example.com"
 }
+
+
+
+### Deleted request to delete a user
+DELETE http://localhost:3000/users/3
+
+

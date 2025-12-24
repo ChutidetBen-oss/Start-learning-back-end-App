@@ -38,7 +38,9 @@ res.send(`<!doctype html>
     </html>`);
 });
 
-let users = [{id:"1", name:"Alice", email:"alice@example.com"}]
+let users = [{id:"1", name:"Alice", email:"alice@example.com"},
+            {id:"2", name:"Charlie", email:"charlie@example.com"}]
+
 
 app.get("/users", (req, res) => {
     res.status(200).json(users);
@@ -57,6 +59,20 @@ app.post("/users", (req, res) => {
     users.push(newUser)    
 
 res.status(201).json(newUser);
+});
+
+// The function inside ia called "Router Handler or Controller"
+app.delete("/users/:id", (req, res) => {
+    const userId = req.params.id;
+    const userIndex = users.findIndex((user) => user.id === userId);
+
+    if (userIndex !== -1){
+    users.splice(userIndex, 1);
+
+    res.status(200).send(`User with ID ${userId} deleted completed`)
+    } else {
+        res.status(404).send("User not found.")
+    }
 });
 
 
