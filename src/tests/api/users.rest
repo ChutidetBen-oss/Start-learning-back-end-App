@@ -1,11 +1,11 @@
 ### GET
-GET http://localhost:3000/users
+GET http://localhost:3000/api/v1/users
 
 
 
 
 ### POST
-POST http://localhost:3000/users
+POST http://localhost:3000/api/v1/users
 Content-Type: application/json
 
 {
@@ -16,6 +16,6 @@ Content-Type: application/json
 
 
 ### Deleted request to delete a user
-DELETE http://localhost:3000/users/4
+DELETE http://localhost:3000/api/v1/users/4
 
 
