@@ -16,6 +16,6 @@ Content-Type: application/json
 
 
 ### Deleted request to delete a user
-DELETE http://localhost:3000/users/3
+DELETE http://localhost:3000/users/4
 
 
