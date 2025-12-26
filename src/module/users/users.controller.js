@@ -1,45 +1,14 @@
 import { users } from "../../mork-db/users.js";
 import { User } from "./users.model.js";
 
-export const testAPI = (req, res) => {
-    res.send(`<!doctype html>
-    <html lang="en">
-        <head>
-        <meta charset="utf-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <title>Express + Tailwind</title>
-        <script src="https://cdn.tailwindcss.com"></script>
-        </head>
-        <body class="min-h-screen bg-gray-50 text-gray-800">
-            <main class="max-w-2xl mx-auto p-8">
-            <div class="rounded-xl bg-white shadow-sm ring-1 ring-gray-100 p-8">
-                <h1 class="text-3xl font-bold tracking-tight text-blue-600">
-                Hello Client! I am your Server!
-                </h1>
-                <p class="mt-3 text-gray-600">
-                This page is styled with <span class="font-semibold">Tailwind CSS</span> via CDN.
-                </p>
-                <div class="mt-6 flex flex-wrap items-center gap-3">
-                    <a href="/users" class="inline-flex items-center rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white shadow hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
-                    GET /users
-                    </a>
-                    <span class="text-xs text-gray-500">Try POST/PUT/DELETE with your API client.</span>
-                </div>
-            </div>
-                <footer class="mt-10 text-center text-xs text-gray-400">
-                    Express server running with Tailwind via CDN
-                </footer>
-            </main>
-        </body>
-    </html>`);
-};
 
-export const getUsers2 = (req, res) => {
+// router mock data
+export const getUsers1 = (req, res) => {
     res.status(200).json(users);
     console.log(res);
 };
-
-export const getUsers = async (req, res) => {
+// router get data in database
+export const getUsers2 = async (req, res) => {
     try {
         const users = await User.find().select("--password");
         return res.status(200).json({
@@ -53,8 +22,8 @@ export const getUsers = async (req, res) => {
         });
     }
 };
-
-export const deleteUser = (req, res) => {
+// delete mock data user
+export const deleteUser1 = (req, res) => {
     const userId = req.params.id;
     const userIndex = users.findIndex((user) => user.id === userId);
 
@@ -67,7 +36,32 @@ export const deleteUser = (req, res) => {
     }
 };
 
-export const createUser2 = (req, res) => {
+// delete user in data base
+export const deleteUser2 = async (req, res) => {
+    const { id } = req.params;
+
+    try {
+        const deleted = await User.findByIdAndDelete(id)
+
+        if (!deleted) {
+            return res.status(404).json({
+                seccess: false,
+                error: "User not found...",
+            })
+        }
+        return res.status(200).json({
+            secess: true,
+            data: null,
+        })
+    } catch (error) {
+        return res.status(500).json({
+            seccess: false,
+            error: "Failed to delete user...",
+        })
+    }
+}
+// create data mock
+export const createUser1 = (req, res) => {
     const { name, email } = req.body;
 
     const newUser = {
@@ -82,10 +76,10 @@ export const createUser2 = (req, res) => {
 };
 
 //route handle: create a new user in the database
-export const createUser = async (req, res) => {
-    const { username, email, password } = req.body;
+export const createUser2 = async (req, res) => {
+    const { username, email, password, role } = req.body;
 
-    if (!username || !email || !password) {
+    if (!username || !email || !password ) {
         return res.status(400).json({
             success: false,
             error: "username, email, and password are required",
@@ -93,7 +87,7 @@ export const createUser = async (req, res) => {
     }
 
     try {
-        const doc = await User.create({ username, email, password });
+        const doc = await User.create({ username, email, password, role});
 
         const safe = doc.toObject();
         delete safe.password;
@@ -113,6 +107,69 @@ export const createUser = async (req, res) => {
         return res.status(500).json({
             success: false,
             error: "Failed to create user...",
+        });
+    }
+};
+
+
+// router handler : update a user in the database
+// ✅ route handler: update a user in the database
+export const updateUser2 = async (req, res) => {
+    const { id } = req.params;
+
+    const body = req.body;
+
+    try {
+        const updated = await User.findByIdAndUpdate(id, body);
+
+        if (!updated) {
+            return res.status(404).json({
+                success: false,
+                error: "User not found...",
+            });
+        }
+
+        const safe = updated.toObject();
+        delete safe.password;
+
+        return res.status(200).json({
+            success: true,
+            data: safe,
+        });
+    } catch (error) {
+        if (error.code === 11000) {
+            return res.status(409).json({
+                success: false,
+                error: "Email already in use!",
+            });
+        }
+
+        return res.status(500).json({
+            success: false,
+            error: "Failed to update user...",
+        });
+    }
+};
+
+// :white_check_mark: route handler: GET a single user by id from the database
+export const getUser2 = async (req, res) => {
+    const { id } = req.params;
+    try {
+        const doc = await User.findById(id).select("-password");
+        if (!doc) {
+            return res.status(404).json({
+                success: false,
+                error: "User not found...",
+            });
+        }
+        return res.status(200).json({
+            success: true,
+            data: doc,
+        });
+    } catch (error) {
+        return res.status(500).json({
+            success: false,
+            error: "Failed to get a user...",
         });
     }
 };

@@ -1,5 +1,5 @@
 ### GET
-GET http://localhost:3000/api/v1/users
+GET http://localhost:3000/api/v2/users
 
 
 
@@ -9,8 +9,8 @@ POST http://localhost:3000/api/v1/users
 Content-Type: application/json
 
 {
-    "username":"Wee",
-    "email":"wee@example.com",
+    "username":"Joy",
+    "email":"joy@example.com",
     "password":"pass123yoy"
 }
 
