@@ -9,7 +9,7 @@ const corsOption = {
         "http://localhost:5173",
         "http://localhost:5174",
         "http://localhost:5175",
-        "https://fornt-end-connect-back-end.vercel.app/",
+        "https://fornt-end-connect-back-end.vercel.app",
     ]
 }
 
