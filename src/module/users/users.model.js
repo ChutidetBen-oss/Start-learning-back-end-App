@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import bcrypt from "bcrypt"
 
 // a data model is created from a data shema
 
@@ -12,6 +13,11 @@ const userSchema = new mongoose.Schema({
     timestamps: true,
 }
 );
+
+userSchema.pre("save", async function(){
+    if(!this.isModified("password")) return
+    this.password = await bcrypt.hash(this.password, 10)
+});
 
 // mongodb will automaticaly create users collection
 export const User = mongoose.model("User", userSchema);

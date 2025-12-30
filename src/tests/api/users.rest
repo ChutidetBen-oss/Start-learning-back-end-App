@@ -9,9 +9,10 @@ POST http://localhost:3000/api/v2/users
 Content-Type: application/json
 
 {
-    "username":"Joy",
-    "email":"joy@example.com",
-    "password":"pass123yoy"
+    "username":"Cartoon",
+    "email":"cartoon@example.com",
+    "password":"bnkcartoondiwa",
+    "role":"admin"
 }
 
 
