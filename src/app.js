@@ -1,5 +1,6 @@
 import express from "express";
 import cors from "cors";
+import cookieParser from "cookie-parser";
 import { router as apiRoutes } from "./routes/index.js";
 
 export const app = express();
@@ -11,11 +12,15 @@ const corsOptions = {
     "http://localhost:5175",
     "https://jsd-react-assessment-solution.vercel.app",
   ],
+  credentials: true, // ✅  allow cookies to be sent
 };
 
 app.use(cors(corsOptions));
 
 app.use(express.json());
+
+// Middleware to parse cookies (required for cookie-based auth)
+app.use(cookieParser());
 
 app.get("/", (req, res) => {
   res.send("Hello World!");
