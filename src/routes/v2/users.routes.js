@@ -17,12 +17,12 @@ router.get("/", getUsers2);
 
 router.get("/:id", getUser2);
 
-router.post("/", createUser2);
+router.post("/", authUser, createUser2);
 
 // The function inside ia called "Router Handler or Controller"
-router.delete("/:id", deleteUser2);
+router.delete("/:id", authUser, deleteUser2);
 
-router.patch("/:id", updateUser2);
+router.patch("/:id", authUser, updateUser2);
 
 //Login a user - jwt signed token (token in cookies)
 router.post("/auth/cookie/login", async (req, res, next) => {

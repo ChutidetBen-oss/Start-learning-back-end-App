@@ -2,8 +2,15 @@ import express from "express";
 import cors from "cors"
 import {router as apiRouter} from "./routes/index.js"
 import cookieParser from "cookie-parser"
+import helmet from "helmet"
+import { limiter } from "./middlewares/rateLimit.js";
+
 
 export const app = express();
+
+app.set("trust proxy", 1)
+
+app.use(helmet());
 
 const corsOption = {
     origin:[
@@ -11,10 +18,14 @@ const corsOption = {
         "http://localhost:5174",
         "http://localhost:5175",
         "https://fornt-end-connect-back-end.vercel.app",
-    ]
-}
+    ],
+credentials:true, // allow cookies to be sent
+};
 
 app.use(cors(corsOption))
+
+app.use(limiter);
+
 
 app.use(express.json());
 
