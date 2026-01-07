@@ -5,6 +5,7 @@ import {
     deleteUser2,
     updateUser2,
     getUser2,
+    askUsers2,
 } from "../../module/users/users.controller.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
@@ -14,6 +15,38 @@ import {authUser} from "../../middlewares/auth.js"
 export const router = Router();
 
 router.get("/", getUsers2);
+
+router.get("/auth/cookie/me", authUser, async (req, res, next) => {
+    try {
+        const userId = req.user.user._id
+
+        const user = await User.findById(userId)
+
+        if(!user){
+            return res.status(401).json({
+                error:true,
+                messega:"Unauthenticated",
+            })
+        }
+
+        res.status(200).json({
+            error: false,
+            user:{
+                _id: user._id,
+                username:user.username,
+                email:user.email,
+                role:user.role,
+            },
+        });
+
+    } catch (error) {
+        next(error)
+    }
+});
+
+//
+router.post("/auth/ai/ask", authUser, askUsers2)
+
 
 router.get("/:id", getUser2);
 
@@ -89,6 +122,8 @@ router.post("/auth/cookie/login", async (req, res, next) => {
     }
 });
 
+//Check user authentication (check if user has valid token)
+
 
 //Logout a user
 router.post("/auth/cookie/logout", (req, res) =>{
@@ -108,33 +143,8 @@ router.post("/auth/cookie/logout", (req, res) =>{
 });
 
 
-//Check user authentication (check if user has valid token)
-router.get("/auth/cookie/me", authUser, async (req, res, next) => {
-    try {
-        const userId = req.user.user._id
 
-        const user = await User.findById(userId)
 
-        if(!user){
-            return res.status(401).json({
-                error:true,
-                messega:"Unauthenticated",
-            })
-        }
 
-        res.status(200).json({
-            error: false,
-            user:{
-                _id: user._id,
-                username:user.username,
-                email:user.email,
-                role:user.role,
-            },
-        });
-
-    } catch (error) {
-        next(error)
-    }
-});
 
 
