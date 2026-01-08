@@ -230,8 +230,8 @@ export const askUsers2 = async (req, res, next) => {
             ...contextLines,
             "END RETRIEVED CONTEXT",
             "",
-            "QUESTION:"
-            trimmed
+            "QUESTION:",
+            trimmed,
         ].join("\n");
         
         let answer = null

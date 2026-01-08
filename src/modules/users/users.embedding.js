@@ -57,7 +57,7 @@ export const embedUserById = async (userId) => {
       {
         $set: {
           "embedding.status": "READY",
-          "embedding.vector": vector,
+          "embedding.vectors": vector,
           "embedding.dims": GEMINI_EMBEDDING_DIMS,
           "embedding.updateAt": new Date(),
           "embedding.lastError": null,
