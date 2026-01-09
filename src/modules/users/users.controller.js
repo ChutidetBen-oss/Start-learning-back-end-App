@@ -1,4 +1,4 @@
-import { users } from "../../mock-db/users.js";
+import { users } from "../../mork-db/users.js";
 import { embedText, generateText } from "../../services/gemini.client.js";
 import { User } from "./users.model.js";
 import { queueEmbedUserById } from "./users.embedding.js";
