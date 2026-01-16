@@ -243,7 +243,6 @@ export const askUsers2 = async (req, res, next) => {
     let answer = null;
 
     try {
-      // we will create generateText() later
       answer = await generateText({ prompt });
     } catch (genError) {
       console.error("Gemini generation failed", {
